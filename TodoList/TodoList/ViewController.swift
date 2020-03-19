@@ -28,7 +28,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         var expireDate: Date
         var isChecked: Bool
     }
-    
+    // Variabeln
     var todoArray: [Todo] = []
     var index: Int = 0
     @IBOutlet weak var todoTableView: UITableView!
@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         todoTableView.delegate = self
         todoTableView.dataSource = self
     }
-    
+    // lade die Todos erneut und update das tableView
     override func viewWillAppear(_ animated: Bool) {
         loadTodos()
         todoTableView.reloadData()
@@ -61,10 +61,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // Request für Todos stellen
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        // Sort the todos by their expiredates
+        // Sortiert die Todos anhand ihrer Ablaufdaten
         let sort = NSSortDescriptor(key: "expireDate", ascending: true)
         request.sortDescriptors = [sort]
-        // perform a requst
+        
         do {
             let todos = try context.fetch(request)
             
@@ -87,12 +87,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print("Error ist aufgetreten!")
         }
     }
-    // Returns the number of rows for the tableview
+    // Gibt die Anzahl an Einträgen zurück
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         index = 0
         return todoArray.count
     }
-    // returns the content of the rows
+    // Erstellt für jede Zelle den passenden Kontent
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = todoTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
@@ -105,7 +105,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.delegate = self
         cell.indexPath = indexPath
         
-        //cell.nameLabelForCell.text = "\(todoArray[index].name)"
         let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "\(todoArray[indexPath.row].name)")
         
         // if Todo is selected
@@ -121,7 +120,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             
         }
-        // set the correct image for the cell
+        // Setzt das passende Bild für das Todo
         var tempDate = todoArray[indexPath.row].expireDate.distance(to: Date())
         
         if tempDate < 0 {
@@ -138,11 +137,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         index += 1
         return cell
     }
-    // returns the hight of the cell
+    // Definiert die Höhe der Zellen
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
-    
+    // Löscht bei Bedarf die ausgewählte Zelle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
             
@@ -179,47 +178,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             viewWillAppear(true)
         }
     }
-    // Removes the selected todo
-    /*func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // Kontext idtentifizieren
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        let context = appDelegate.persistentContainer.viewContext
-        let entityName = "Todo"
-        
-        // Request für Todos stellen
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        
-        do {
-            let todos = try context.fetch(request)
-            
-            // löscht das ausgewählte Todo aus dem Speicher
-            var index = 0
-            for t in todos {
-                if let todo = t as? NSManagedObject {
-                    if todo.value(forKey: "name") as! String == todoArray[indexPath.row].name {
-                        print("\(todo.value(forKey: "name") as! String) ++ \(todoArray[indexPath.row].name)")
-                        context.delete(todo)
-                        try context.save()
-                    }
-                }
-                index += 1
-            }
-        } catch {
-            print("Error ist aufgetreten!")
-        }
-    }*/
+    
     // Changes the image if the todo is selected
     @IBAction func checkAction(_ sender: UIButton) {
     }
     
-    // Performs a segue to the create-Todo-Screen
+    // Führt den Übergang zum Todo-Erstellungsbildschirm durch
     @IBAction func addNewTodoAxction(_ sender: UIButton) {
         performSegue(withIdentifier: "segue", sender: self)
     }
-    // add sender to function-parameter
+    // Updatet die Parameter für das Todo, wenn es ausgewählt wurde
     func checkTodoAction(at index: IndexPath, _ sender: UIButton) {
         //print(index[1])
         if sender.isSelected {

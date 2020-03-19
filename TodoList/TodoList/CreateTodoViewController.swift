@@ -23,7 +23,7 @@ class CreateTodoViewController: UIViewController {
             overrideUserInterfaceStyle = .dark
         }
     }
-    
+    // Action um ein neues Todo anzulegen
     @IBAction func createTodoAction(_ sender: UIButton) {
         
         if nameTextField.text == "" {
@@ -34,7 +34,7 @@ class CreateTodoViewController: UIViewController {
         dismiss(animated: true, completion: nil)
         
     }
-    
+    // Action um zum Sartbildschirm zurückzukehren
     @IBAction func goBackAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -64,7 +64,7 @@ class CreateTodoViewController: UIViewController {
         newTodo.setValue(expireDate, forKey: "expireDate")
         newTodo.setValue(false, forKey: "isSelected")
         
-        // Neuen Score speichern
+        // Neues Todo speichern
         do {
             print("hat geklappt")
             try context.save()
@@ -89,7 +89,7 @@ class CreateTodoViewController: UIViewController {
         let temp8 = String(temp7.suffix(2))
         let unMonth = Int(temp8)!
         print("minute: \(unMinute) hour: \(unHour) day: \(unDay) month: \(unMonth)")
-        
+        // Rufe die Funktion auf, um die Usernotification für dieses Todo zu erstellen
         createUN(minute: unMinute, hour: unHour, day: unDay, month: unMonth, name: name)
     }
     
